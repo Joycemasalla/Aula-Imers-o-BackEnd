@@ -1,0 +1,69 @@
+
+### Resumo: Conectar MongoDB Atlas ao Projeto Node.js
+
+1. **Crie o banco no MongoDB Atlas:**
+   - Acesse o [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+   - Crie um *cluster*, adicione um usuário (*Database Access*) e configure o IP (*Network Access*).
+   - Copie a string de conexão em *Connect your application*.
+
+2. **Configure o `.env`:**
+   - Crie um arquivo `.env` na raiz do projeto e adicione:
+     ```env
+     STRING_CONEXAO=mongodb+srv://usuario:senha@cluster.mongodb.net/banco?retryWrites=true&w=majority
+     PORT=3000
+     ```
+
+3. **Instale dependências:**
+   ```bash
+   npm install dotenv mongodb
+   ```
+
+4. **Configure o `server.js`:**
+   ```javascript
+   import dotenv from 'dotenv';
+   import { MongoClient } from 'mongodb';
+
+   dotenv.config();
+
+   async function conectarAoBanco(uri) {
+       const client = new MongoClient(uri);
+       await client.connect();
+       console.log('Conectado ao MongoDB');
+       return client;
+   }
+
+   const conexao = await conectarAoBanco(process.env.STRING_CONEXAO);
+   ```
+
+5. **Adicione rota de teste:**
+   ```javascript
+   app.get('/posts', async (req, res) => {
+       const db = conexao.db('nome-do-banco');
+       const posts = await db.collection('posts').find().toArray();
+       res.status(200).json(posts);
+   });
+   ```
+
+6. **Adicione script no `package.json`:**
+   ```json
+   "scripts": {
+       "dev": "node --watch server.js"
+   }
+   ```
+
+7. **Execute e teste:**
+   - Inicie o servidor:
+     ```bash
+     npm run dev
+     ```
+   - Acesse `http://localhost:3000/posts` no navegador ou Postman.
+
+---
+
+### Comandos Rápidos
+- **Instalar dependências:** `npm install dotenv mongodb`
+- **Rodar servidor:** `npm run dev`
+
+
+
+

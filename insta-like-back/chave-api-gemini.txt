@@ -1,0 +1,3 @@
+
+mongo: joycemasallajorge2006 senha: RtybTCZ1HGcWjqDj
+mongodb+srv://joycemasallajorge2006:RtybTCZ1HGcWjqDj@cluster-imersao.mloig.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-Imersao
